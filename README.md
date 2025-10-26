@@ -1,45 +1,16 @@
-# 👌 Laravel - Inertia - VueJs - PrimeVue
+# FinTrack
 
-**Starter-Kit-Laravel-Inertia-VueJs** Repository designed so that you don't have to waste time confirming VueJs, Inertia and PrimeVue.
+FinTrack é um sistema simples para controle financeiro pessoal, permitindo que o usuário registre ganhos, gastos e metas de economia.
 
-## ⚙️ Instalação
+## Funcionalidades
 
-1. Clone the repository:
+- Adicionar ganhos e gastos
+- Criar metas de economia
+- Adicionar itens desejados
+- Análise automática de saldo para ver se é possível comprar algo
 
-```bash
-git clone https://github.com/MutoLucas/Starter-Kit-Laravel-Inertia-VueJs project
-cd project
-```
+## Tecnologias
 
-2. Install the dependencies:
-
-```bash
-composer install
-npm install && npm run build
-```
-
-3. Configure `.env`:
-
-```bash
-cp .env.example .env
-php artisan key:generate
-```
-
-4. Configure the database and run the migrations:
-
-```bash
-php artisan migrate
-```
-
-5. Start the server:
-
-```bash
-php artisan server
-npm run dev
-```
-
-## 🤝 Contribution
-
-Feel free to open issues or pull requests. All contributions are welcome!
-
----
+- Backend: Laravel (PHP)
+- Frontend: Vue.js com Tailwind CSS
+- Banco de dados: PostgreSQL
