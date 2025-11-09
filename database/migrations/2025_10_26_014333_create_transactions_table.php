@@ -20,6 +20,7 @@ return new class extends Migration
             $table->boolean('recurring');
             $table->foreignId('category_id')->constrained('categories')->onDelete('cascade');
             $table->date('transaction_date')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }
