@@ -14,11 +14,11 @@ return new class extends Migration
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('category_id')->constrained('categories')->onDelete('cascade');
             $table->string('description')->nullable();
             $table->decimal('amount',10,2);
             $table->enum('type',['expense','income']);
-            $table->boolean('isRecurring');
-            $table->foreignId('category_id')->constrained('categories')->onDelete('cascade');
+            $table->boolean('isRecurring')->default(false);
             $table->date('transaction_date')->nullable();
             $table->softDeletes();
             $table->timestamps();

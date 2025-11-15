@@ -7,11 +7,12 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 use App\Models\Category;
+use App\Models\User;
 
 class Transaction extends Model
 {
     use SoftDeletes;
-    
+
     protected $table = "transactions";
 
     protected $fillable = [
@@ -27,6 +28,11 @@ class Transaction extends Model
     public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class);
+    }
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
     }
 
 }
