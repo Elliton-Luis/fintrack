@@ -1,30 +1,42 @@
 <template>
-  <div class="w-full bg-slate-800 rounded-lg shadow-lg p-6">
-    <div class="flex items-center justify-between mb-2">
-      <h3 class="text-xl font-semibold text-white">Saldo total</h3>
-      <button @click="toggleVisibility" class="text-gray-400 hover:text-white p-2">
-        <i class="pi" :class="isBalanceVisible ? 'pi-eye' : 'pi-eye-slash'"></i>
+  <div class="rounded-lg w-full shadow-lg p-4 h-28
+              border border-slate-600 bg-slate-700/20 backdrop-blur-sm
+              flex flex-col justify-between">
+
+    <div class="flex items-center justify-between">
+      <h3 class="text-lg font-semibold text-white">Saldo total</h3>
+
+      <button @click="emitToggle" class="text-gray-300 hover:text-white p-1 -mt-1 -mr-1">
+        <i class="pi" :class="isVisible ? 'pi-eye' : 'pi-eye-slash'"></i>
       </button>
     </div>
 
-    <p class="text-3xl font-bold text-white h-[40px]">
-      <span v-if="isBalanceVisible">{{ formattedBalance }}</span>
+    <p class="text-2xl font-bold text-white">
+      <span v-if="isVisible">{{ formattedBalance }}</span>
       <span v-else>R$ ••••••</span>
     </p>
   </div>
 </template>
 
 <script setup>
-import { computed, ref } from 'vue';
+import { computed } from 'vue';
 
 const props = defineProps({
   balance: {
     type: Number,
     default: 0,
+  },
+  isVisible: {
+    type: Boolean,
+    default: true,
   }
 });
 
-const isBalanceVisible = ref(true);
+const emit = defineEmits(['toggle-visibility']);
+
+const emitToggle = () => {
+  emit('toggle-visibility');
+};
 
 const formattedBalance = computed(() => {
   return props.balance.toLocaleString('pt-BR', {
@@ -32,8 +44,4 @@ const formattedBalance = computed(() => {
     currency: 'BRL',
   });
 });
-
-const toggleVisibility = () => {
-  isBalanceVisible.value = !isBalanceVisible.value;
-};
 </script>

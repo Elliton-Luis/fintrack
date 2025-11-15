@@ -1,38 +1,78 @@
 <template>
-  <div class="flex h-screen bg-slate-900 text-gray-300">
+    <div class="flex h-screen bg-slate-950 text-slate-300">
 
-    <Sidebar :isOpen="isMobileMenuOpen" @close-menu="isMobileMenuOpen = false" />
-    <Navbar @toggle-menu="isMobileMenuOpen = true" />
+        <!-- Sidebar -->
+        <Sidebar
+            :isOpen="isMobileMenuOpen"
+            @close-menu="isMobileMenuOpen = false"
+        />
 
-    <main class="w-full lg:flex-1 p-8 lg:p-12 overflow-y-auto pt-20 lg:pt-12">
-      <h2 class="text-3xl font-semibold text-white mb-8">Dashboard</h2>
+        <!-- Navbar -->
+        <Navbar @toggle-menu="isMobileMenuOpen = true" />
 
-      <div class="grid grid-cols-1 lg:grid-cols-5 gap-8">
+        <!-- MAIN -->
+        <main class="flex-1 overflow-y-auto pt-24 lg:pt-16">
+            <div class="min-h-screen p-6 lg:p-8">
 
-        <div class="lg:col-span-2 flex flex-col gap-8">
-          <TotalBalance :balance="totalBalance" />
-          <TransactionForm />
-        </div>
+                <!-- ===================================== -->
+                <!-- LINHA 1: Totais (3 colunas responsivas) -->
+                <!-- ===================================== -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mb-8">
+                    <TotalBalance
+                        :balance="totalBalance"
+                        :is-visible="isSharedBalanceVisible"
+                        @toggle-visibility="toggleSharedVisibility"
+                    />
+                    <TotalIncome
+                        :income="totalIncome"
+                        :is-visible="isSharedBalanceVisible"
+                    />
+                    <TotalExpense
+                        :expense="totalExpense"
+                        :is-visible="isSharedBalanceVisible"
+                    />
+                </div>
 
-        <div class="lg:col-span-3 flex flex-col gap-8">
-          <TransactionChart />
-          <RecentTransactions />
-        </div>
+                <!-- ===================================== -->
+                <!-- LINHA 2: Ações / Transações / Gráfico -->
+                <!-- 3 colunas, responsivas, sem sobreposição -->
+                <!-- ===================================== -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mb-8">
+                    <QuickActions />
+                    <RecentTransactions />
+                    <TransactionChart />
+                </div>
 
-      </div>
-    </main>
-  </div>
+            </div>
+        </main>
+
+    </div>
 </template>
+
 
 <script setup>
 import { ref } from 'vue';
+
 import Sidebar from '../components/Sidebar.vue';
-import Navbar from '../components/Navbar.vue'; // Importe o Navbar
+import Navbar from '../components/Navbar.vue';
+
 import TotalBalance from '../components/TotalBalance.vue';
-import TransactionForm from '../components/TransactionForm.vue';
-import TransactionChart from '../components/TransactionChart.vue';
+import TotalIncome from '../components/TotalIncome.vue';
+import TotalExpense from '../components/TotalExpense.vue';
+
+import QuickActions from '../components/QuickActions.vue';
 import RecentTransactions from '../components/RecentTransactions.vue';
+import TransactionChart from '../components/TransactionChart.vue';
 
 const isMobileMenuOpen = ref(false);
-const totalBalance = ref(5000.00);
+
+const totalIncome = 7500.00;
+const totalExpense = 2500.00;
+const totalBalance = totalIncome - totalExpense;
+
+const isSharedBalanceVisible = ref(true);
+
+const toggleSharedVisibility = () => {
+    isSharedBalanceVisible.value = !isSharedBalanceVisible.value;
+};
 </script>
