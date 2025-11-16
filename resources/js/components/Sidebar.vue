@@ -1,9 +1,8 @@
 <template>
-    <!-- Overlay -->
+
     <div v-if="isOpen" @click="$emit('closeMenu')"
         class="lg:hidden fixed inset-0 z-30 bg-slate-900/60 backdrop-blur-sm transition-opacity"></div>
 
-    <!-- Sidebar -->
     <aside class="w-60 flex-shrink-0 p-6 flex flex-col justify-between
                fixed top-0 left-0 h-screen z-40 transition-transform duration-300 ease-in-out
                lg:relative lg:h-screen lg:z-auto lg:translate-x-0
@@ -14,7 +13,7 @@
 
             <nav class="flex flex-col gap-4">
 
-                <Link href="/"
+                <Link href="/dashboard"
                     class="flex items-center gap-3 p-3 rounded-lg text-slate-300 hover:bg-blue-600 hover:text-white transition-colors"
                     :class="{ 'bg-blue-600 text-white': $page.url === '/' }">
                 <i class="pi pi-home"></i>
