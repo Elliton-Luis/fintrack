@@ -13,11 +13,17 @@ class Category extends Model
     protected $fillable = [
         'name',
         'type',
-        'icon_id'
+        'icon_id',
+        'user_id'
     ];
 
     public function transactions(): HasMany
     {
         return $this->hasMany(Transaction::class);
     }
+
+    public function icon()
+{
+    return $this->belongsTo(Icon::class);
+}
 }
