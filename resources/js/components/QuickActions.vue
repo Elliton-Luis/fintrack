@@ -49,14 +49,21 @@
             </div>
         </template>
 
-        <TransactionForm @close="isTransactionModalOpen = false" @save="handleTransactionSave" />
+        <TransactionForm :categories="props.categories" @close="isTransactionModalOpen = false"
+            @save="handleTransactionSave" />
+
     </Modal>
 
 </template>
 
 <script setup>
 import { ref } from 'vue';
-import Modal from './Modal.vue'; // Assumindo que seu BaseModal se chama Modal.vue
+
+const props = defineProps({
+    categories: Array
+});
+
+import Modal from './Modal.vue';
 import TransactionForm from './TransactionForm.vue';
 
 const isTransactionModalOpen = ref(false);
