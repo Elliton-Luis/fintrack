@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('category_id')->constrained('categories')->onDelete('cascade');
+            $table->string('title',255);
             $table->string('description')->nullable();
             $table->decimal('amount',10,2);
             $table->enum('type',['expense','income']);

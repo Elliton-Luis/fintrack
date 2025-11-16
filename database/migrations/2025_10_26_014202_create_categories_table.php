@@ -13,9 +13,10 @@ return new class extends Migration
     {
         Schema::create('categories', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('icon_id')->constrained('icons')->onDelete('cascade');
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->string('name');
             $table->enum('type',['expense','income']);
-            $table->foreignId('icon_id')->constrained('icons')->onDelete('cascade');
             $table->timestamps();
         });
     }
