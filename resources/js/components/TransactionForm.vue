@@ -21,8 +21,8 @@
             </div>
 
             <div>
-                <label for="name" class="block text-sm font-medium text-gray-300 mb-1">Nome</label>
-                <input type="text" id="name" v-model="name"
+                <label for="title" class="block text-sm font-medium text-gray-300 mb-1">Nome</label>
+                <input type="text" id="title" v-model="title"
                     class="block w-full bg-slate-700 border border-slate-600 rounded-md py-2 px-3 text-white placeholder-gray-400 focus:ring-yellow-500 focus:border-yellow-500"
                     placeholder="Ex: Salário" />
             </div>
@@ -40,22 +40,28 @@
                     <select id="category" v-model="selectedCategory"
                         class="block w-full bg-slate-700 border border-slate-600 rounded-md py-2 px-3 text-white placeholder-gray-400 focus:ring-yellow-500 focus:border-yellow-500 flex-grow">
                         <option :value="null" disabled>Selecione uma categoria</option>
-                        <option v-for="cat in categories" :key="cat" :value="cat">{{ cat }}</option>
+                        <option v-for="cat in props.categories" :key="cat.id" :value="cat.id">
+                            {{ cat.name }}
+                        </option>
                     </select>
 
-                    <button type="button" aria-label="Adicionar Categoria"
+                    <button type="button" @click="showCategoryModal = true" aria-label="Adicionar Categoria"
                         class="flex-shrink-0 p-2.5 bg-slate-700 hover:bg-slate-600 rounded-md">
                         <svg class="w-5 h-5 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
                         </svg>
                     </button>
+
+                    <Modal :isOpen="showCategoryModal" @close="showCategoryModal = false">
+                        <CategoryForm @category-added="onCategoryAdded" />
+                    </Modal>
                 </div>
             </div>
 
             <div>
-                <label for="value" class="block text-sm font-medium text-gray-300 mb-1">Valor</label>
-                <input type="number" id="value" v-model="value"
+                <label for="amount" class="block text-sm font-medium text-gray-300 mb-1">Valor</label>
+                <input type="number" id="amount" v-model="amount"
                     class="block w-full bg-slate-700 border border-slate-600 rounded-md py-2 px-3 text-white placeholder-gray-400 focus:ring-yellow-500 focus:border-yellow-500"
                     placeholder="R$ 0,00" step="0.01" />
             </div>
@@ -75,7 +81,6 @@
                     class="block w-full bg-slate-700 border border-slate-600 rounded-md py-2 px-3 text-white focus:ring-yellow-500 focus:border-yellow-500" />
             </div>
 
-
             <button type="submit"
                 class="w-full bg-yellow-500 border border-yellow-500 text-black font-bold py-2.5 px-4 rounded-md hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:ring-opacity-75">
                 Salvar
@@ -87,49 +92,51 @@
 <script setup>
 import { ref } from 'vue'
 import { useForm } from '@inertiajs/vue3'
+import Modal from './Modal.vue'
+import CategoryForm from './CategoryForm.vue'
 
 const emit = defineEmits(['transaction-registered'])
 
 const type = ref('income')
-const name = ref('')
+const title = ref('')
 const description = ref('')
-const value = ref(0)
+const amount = ref(0)
 const isRecurring = ref(false)
 const selectedCategory = ref(null)
 const transaction_date = ref(null)
+const showCategoryModal = ref(false)
 
-const categories = ref([
-    'Salário',
-    'Aluguel',
-    'Mercado',
-    'Transporte',
-    'Lazer',
-    'Outros',
-])
+const props = defineProps({
+    categories: Array
+})
 
 const store = () => {
     const form = useForm({
         type: type.value,
-        name: name.value,
+        title: title.value,
         description: description.value,
-        value: value.value,
+        amount: amount.value,
         isRecurring: isRecurring.value,
-        category: selectedCategory.value,
+        category_id: selectedCategory.value,
         transaction_date: transaction_date.value,
     })
 
-    form.post('/transactions/store', {
+    form.post('/transactions', {
         onSuccess: () => {
             emit('transaction-registered')
-
             type.value = 'income'
-            name.value = ''
+            title.value = ''
             description.value = ''
-            value.value = 0
+            amount.value = 0
             isRecurring.value = false
             selectedCategory.value = null
             transaction_date.value = null
         },
     })
+}
+
+const onCategoryAdded = (newCategory) => {
+    props.categories.push(newCategory)
+    showCategoryModal.value = false
 }
 </script>

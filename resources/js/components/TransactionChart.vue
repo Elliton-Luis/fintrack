@@ -15,48 +15,66 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue'
+import { ref, onMounted, computed, watch } from 'vue'
 import { Chart, PieController, ArcElement, Tooltip, Legend, Title } from 'chart.js'
 
 Chart.register(PieController, ArcElement, Tooltip, Legend, Title)
 
-const chartEl = ref(null)
+const props = defineProps({
+  transactions: Array
+})
 
-onMounted(() => {
-  new Chart(chartEl.value, {
+const chartEl = ref(null)
+let chartInstance = null
+
+const categoryTotals = computed(() => {
+  return (props.transactions ?? []).reduce((acc, t) => {
+    const category = t.category?.name ?? 'Sem categoria'
+    acc[category] = (acc[category] || 0) + Number(t.amount)
+    return acc
+  }, {})
+})
+
+function distinctColor(index, total) {
+  const hue = Math.round((360 / total) * index)
+  return `hsl(${hue}, 70%, 50%)`
+}
+
+const chartData = computed(() => {
+  const totals = categoryTotals.value
+  const keys = Object.keys(totals)
+  return {
+    labels: keys,
+    datasets: [
+      {
+        label: 'Gastos por Categoria',
+        data: Object.values(totals),
+        backgroundColor: keys.map((_, i) => distinctColor(i, keys.length)),
+        borderColor: 'rgba(255,255,255,0.1)',
+        borderWidth: 1,
+      }
+    ]
+  }
+})
+
+function renderChart() {
+  if (chartInstance) chartInstance.destroy()
+  chartInstance = new Chart(chartEl.value, {
     type: 'pie',
-    data: {
-      labels: ['Aluguel', 'Comida', 'Transporte', 'Lazer', 'Saúde', 'Investimentos'],
-      datasets: [
-        {
-          data: [420, 680, 190, 310, 140, 500],
-          backgroundColor: [
-            'rgb(239,68,68)',
-            'rgb(34,197,94)',
-            'rgb(59,130,246)',
-            'rgb(234,179,8)',
-            'rgb(168,85,247)',
-            'rgb(244,63,94)'
-          ],
-          borderColor: 'rgba(255,255,255,0.1)',
-          borderWidth: 1,
-        }
-      ]
-    },
+    data: chartData.value,
     options: {
       responsive: true,
       maintainAspectRatio: false,
       plugins: {
-        legend: {
-          labels: { color: '#fff' }
-        },
-        title: {
-          display: false
-        }
+        legend: { labels: { color: '#fff' } },
+        title: { display: false }
       }
     }
   })
-})
+}
+
+onMounted(renderChart)
+watch(chartData, renderChart)
 </script>
 
 <style scoped>
