@@ -15,7 +15,7 @@
 
                 <Link href="/dashboard"
                     class="flex items-center gap-3 p-3 rounded-lg text-slate-300 hover:bg-blue-600 hover:text-white transition-colors"
-                    :class="{ 'bg-blue-600 text-white': $page.url === '/' }">
+                    :class="{ 'bg-blue-600 text-white': $page.url.startsWith('/dashboard') }">
                 <i class="pi pi-home"></i>
                 <span>Dashboard</span>
                 </Link>
