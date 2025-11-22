@@ -37,18 +37,37 @@
             </nav>
         </div>
 
-        <div class="border-t border-slate-700 pt-4">
-            <p class="text-slate-400 text-sm">Usuário: André</p>
+        <div class="pt-4 border-t border-slate-700/50 flex flex-col gap-3">
+            <div class="flex items-center gap-3 p-3 rounded-lg bg-slate-900/40 border border-slate-700/50">
+                <div class="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center text-white flex-shrink-0">
+                    <span class="font-bold text-sm">{{ user?.name?.charAt(0).toUpperCase() || 'U' }}</span>
+                </div>
+                <div class="overflow-hidden">
+                    <p class="text-sm font-medium text-white truncate">{{ user?.name || 'Usuário' }}</p>
+                </div>
+            </div>
+
+            <Link as="button"
+                class="w-full flex items-center justify-center gap-2 p-2.5 rounded-lg text-sm font-medium text-red-400 hover:bg-red-500/10 hover:text-red-300 transition-colors border border-transparent hover:border-red-500/20">
+                <i class="pi pi-sign-out"></i>
+                <span>Sair da Conta</span>
+            </Link>
         </div>
     </aside>
 </template>
 
 <script setup>
-import { Link } from '@inertiajs/vue3'
+import { Link, usePage} from '@inertiajs/vue3'
+
+const page = usePage()
+
+const user = page.props.auth?.user || null
 
 defineProps({
     isOpen: Boolean,
 })
 
 defineEmits(['closeMenu'])
+
+
 </script>
