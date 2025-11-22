@@ -17,7 +17,7 @@
 
             </li>
         </ul>
-        <div class="mt-6 pt-4 text-center border-t border-slate-700">
+        <div class="mt-0 pt-4 text-center border-t border-slate-700">
             <a href="/transactions" class="btn text-sm font-medium text-emerald-400 hover:text-emerald-300 transition-colors">
                 Ver Todas
             </a>
