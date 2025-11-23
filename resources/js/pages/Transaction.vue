@@ -3,28 +3,38 @@
         <div id="app" class="p-4 md:p-8 min-h-screen bg-slate-950">
             <div class="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
                 <h1 class="text-3xl font-bold text-white">Minhas Transações</h1>
-
                 <div class="flex flex-col sm:flex-row items-center gap-4 w-full md:w-auto">
-                    <div class="relative w-full md:w-56">
-                        <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
-                            <i class="pi pi-search text-sm"></i>
-                        </div>
-                        <input type="text" v-model="searchQuery" placeholder="Buscar..."
-                            class="w-full appearance-none bg-slate-800/50 border border-slate-600 text-white py-2.5 pl-10 pr-4 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors shadow-lg backdrop-blur-sm placeholder-slate-400" />
-                    </div>
-
                     <div class="relative w-full md:w-48">
-                        <select v-model="filterType"
-                            class="w-full appearance-none bg-slate-800/50 border border-slate-600 text-white py-2.5 pl-4 pr-10 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer hover:bg-slate-800/70 transition-colors shadow-lg backdrop-blur-sm">
-                            <option value="all">Todas</option>
-                            <option value="income">Entradas</option>
-                            <option value="expense">Saídas</option>
-                        </select>
-                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-slate-400">
-                            <i class="pi pi-filter text-sm"></i>
-                        </div>
-                    </div>
-                </div>
+                         <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
+                             <i class="pi pi-search text-sm"></i>
+                         </div>
+                         <input type="text" v-model="searchQuery" placeholder="Buscar..."
+                             class="w-full appearance-none bg-slate-800/50 border border-slate-600 text-white py-2.5 pl-10 pr-4 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors shadow-lg backdrop-blur-sm placeholder-slate-400" />
+                     </div>
+
+                     <div class="relative w-full md:w-40">
+                         <select v-model="filterType"
+                             class="w-full appearance-none bg-slate-800/50 border border-slate-600 text-white py-2.5 pl-4 pr-10 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer hover:bg-slate-800/70 transition-colors shadow-lg backdrop-blur-sm">
+                             <option value="all">Todos Tipos</option>
+                             <option value="income">Entradas</option>
+                             <option value="expense">Saídas</option>
+                         </select>
+                         <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-slate-400">
+                             <i class="pi pi-filter text-sm"></i>
+                         </div>
+                     </div>
+
+                     <div class="relative w-full md:w-44">
+                         <select v-model="sortType"
+                             class="w-full appearance-none bg-slate-800/50 border border-slate-600 text-white py-2.5 pl-4 pr-10 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer hover:bg-slate-800/70 transition-colors shadow-lg backdrop-blur-sm">
+                             <option value="recent">Mais Recentes</option>
+                             <option value="highest">Maior Valor</option>
+                         </select>
+                         <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-slate-400">
+                             <i class="pi pi-sort-alt text-sm"></i>
+                         </div>
+                     </div>
+                 </div>
             </div>
 
             <div v-if="loading" class="text-slate-400">Carregando...</div>
@@ -55,7 +65,8 @@
 </template>
 
 <script setup>
-import { ref, computed, toRaw } from 'vue'
+// O script permanece igual ao que você enviou
+import { ref, computed } from 'vue'
 import Layout from '../layout/Layout.vue'
 import TransactionCard from '../components/TransactionCard.vue'
 import Pagination from '../components/Pagination.vue'
@@ -72,11 +83,11 @@ setTimeout(() => { loading.value = false }, 150)
 
 const searchQuery = ref('')
 const filterType = ref('all')
+const sortType = ref('recent')
 
 const transactionsList = computed(() => props.transactions?.data ?? [])
 
 const filteredTransactions = computed(() => {
-
     let list = Array.isArray(transactionsList.value) ? transactionsList.value.slice() : []
 
     if (filterType.value !== 'all') {
@@ -92,13 +103,18 @@ const filteredTransactions = computed(() => {
         )
     }
 
+    list.sort((a, b) => {
+        if (sortType.value === 'highest') {
+            return parseFloat(b.amount) - parseFloat(a.amount)
+        } else if (sortType.value === 'recent') {
+            return new Date(b.transaction_date) - new Date(a.transaction_date)
+        }
+        return 0
+    })
+
     return list
 })
 
-const handleEdit = id => {
-    console.log('[Transaction.vue] editar', id)
-}
-const handleDelete = id => {
-    console.log('[Transaction.vue] excluir', id)
-}
+const handleEdit = id => console.log('[Transaction.vue] editar', id)
+const handleDelete = id => console.log('[Transaction.vue] excluir', id)
 </script>
