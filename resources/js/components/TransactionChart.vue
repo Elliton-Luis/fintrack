@@ -3,7 +3,7 @@
     <h3 class="text-lg font-semibold text-white mb-4">Gastos por Categoria</h3>
 
     <div class="relative flex items-center justify-center h-64 w-full">
-      <!-- Canvas do Gráfico -->
+
       <canvas ref="chartEl" class="max-h-full z-10 relative"></canvas>
     </div>
 
@@ -20,7 +20,7 @@
 import { ref, onMounted, computed, watch } from 'vue'
 import { Chart, DoughnutController, ArcElement, Tooltip, Legend, Title } from 'chart.js'
 
-// Registrar DoughnutController
+// Registrar componentes do Chart.js
 Chart.register(DoughnutController, ArcElement, Tooltip, Legend, Title)
 
 const props = defineProps({
@@ -33,7 +33,6 @@ const props = defineProps({
 const chartEl = ref(null)
 let chartInstance = null
 
-// Paleta de cores moderna
 const modernPalette = [
   '#10b981', // Emerald
   '#3b82f6', // Blue
@@ -45,9 +44,13 @@ const modernPalette = [
   '#6366f1', // Indigo
 ]
 
-// Processar dados: Agrupar por categoria
+// Lógica principal: Filtra apenas 'expense' e agrupa por categoria
 const categoryData = computed(() => {
-  const data = (props.transactions ?? []).reduce((acc, t) => {
+  // 1. Filtra apenas o que é despesa
+  const expensesOnly = (props.transactions ?? []).filter(t => t.type === 'expense');
+
+  // 2. Agrupa e soma
+  const data = expensesOnly.reduce((acc, t) => {
     const categoryName = t.category?.name ?? 'Outros';
     acc[categoryName] = (acc[categoryName] || 0) + Number(t.amount);
     return acc;
@@ -59,7 +62,6 @@ const categoryData = computed(() => {
   };
 });
 
-// Formatar moeda
 const formatMoney = (val) => {
   return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(val);
 }
@@ -72,7 +74,7 @@ const chartConfig = computed(() => {
         label: 'Gastos',
         data: categoryData.value.values,
         backgroundColor: categoryData.value.labels.map((_, i) => modernPalette[i % modernPalette.length]),
-        borderColor: '#1e293b', // Cor de fundo do card para criar espaçamento
+        borderColor: '#1e293b', // Cor da borda igual ao fundo (slate-800 aprox) para separar fatias
         borderWidth: 4,
         hoverOffset: 4
       }
@@ -82,7 +84,17 @@ const chartConfig = computed(() => {
 
 function renderChart() {
   if (!chartEl.value) return;
-  if (chartInstance) chartInstance.destroy();
+
+  // Se já existir um gráfico, destrói antes de criar o novo para evitar sobreposição/memory leaks
+  if (chartInstance) {
+    chartInstance.destroy();
+  }
+
+  // Se não houver dados (nenhuma despesa), não renderiza ou renderiza vazio
+  if (categoryData.value.values.length === 0) {
+      // Opcional: Você pode limpar o canvas ou desenhar um gráfico vazio aqui
+      return;
+  }
 
   chartInstance = new Chart(chartEl.value, {
     type: 'doughnut',
@@ -90,12 +102,12 @@ function renderChart() {
     options: {
       responsive: true,
       maintainAspectRatio: false,
-      cutout: '75%', // Mantém o buraco da rosca
+      cutout: '75%', // Espessura do anel
       plugins: {
         legend: {
           position: 'right',
           labels: {
-            color: '#cbd5e1',
+            color: '#cbd5e1', // Slate-300
             usePointStyle: true,
             pointStyle: 'circle',
             padding: 15,
@@ -106,10 +118,10 @@ function renderChart() {
           }
         },
         tooltip: {
-          backgroundColor: '#0f172a',
+          backgroundColor: '#0f172a', // Slate-900
           titleColor: '#fff',
           bodyColor: '#cbd5e1',
-          borderColor: '#334155',
+          borderColor: '#334155', // Slate-700
           borderWidth: 1,
           padding: 10,
           displayColors: true,
@@ -134,7 +146,11 @@ function renderChart() {
 
 onMounted(renderChart)
 
-watch(() => props.transactions, renderChart, { deep: true })
+// Observa mudanças na configuração (que depende das props) para atualizar o gráfico
+watch(chartConfig, () => {
+  renderChart();
+}, { deep: true });
+
 </script>
 
 <style scoped>
