@@ -3,19 +3,35 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+
 use Inertia\Inertia;
+
 use App\Models\Transaction;
 use App\Models\Category;
 
+use Carbon\Carbon;
+
+use App\Http\Requests\TransactionRequest;
+
 class TransactionController extends Controller
 {
+    public $id;
+
+    public function __construct()
+    {
+        $this->id = auth()->id();
+    }
+
     public function dashboard()
     {
-        $categories = Category::select('id', 'name')->get();
-        $recentTransactions = Transaction::latest()->take(5)->with('category.icon')->get();
+        $startOfMonth = Carbon::now()->startOfMonth();
+        $endOfMonth = Carbon::now()->endOfMonth();
 
-        // Mantido o get() total para o gráfico funcionar
-        $transactions = Transaction::with('category')->get();
+        $categories = Category::where('user_id',$this->id)->orWhereNull('user_id')->get();
+
+        $recentTransactions = $this->getTransactions()->take(4)->with('category.icon')->get();
+
+        $transactions = $this->getTransactions()->whereBetween('transaction_date', [$startOfMonth, $endOfMonth])->get();
 
         return Inertia::render('Dashboard', [
             'categories' => $categories,
@@ -27,7 +43,7 @@ class TransactionController extends Controller
 
     public function transactions()
     {
-        $transactions = Transaction::with('category')->latest()->paginate(6);
+        $transactions = $this->getTransactions()->with('category')->paginate(6);
 
         return Inertia::render('Transaction', [
             'transactions' => $transactions->through(function ($t) {
@@ -47,23 +63,19 @@ class TransactionController extends Controller
         ]);
     }
 
-    public function store(Request $request)
+    public function store(TransactionRequest $request)
     {
-        $validated = $request->validate([
-            'title'            => 'required|string|max:255',
-            'description'      => 'nullable|string',
-            'type'             => 'required|in:income,expense',
-            'amount'           => 'required|numeric|min:0',
-            'isRecurring'      => 'required|boolean',
-            'category_id'      => 'required|exists:categories,id',
-            'transaction_date' => 'nullable|date'
-        ]);
+        $validated = $request->validated();
 
         Transaction::create([
             ...$validated,
-            'user_id' => 1,
+            'user_id' => $this->id,
         ]);
 
         return redirect()->route('dashboard')->with('success','Transação Realizada com Sucesso');
+    }
+
+    private function getTransactions(){
+        return Transaction::where('user_id',$this->id)->latest();
     }
 }
