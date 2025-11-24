@@ -8,6 +8,7 @@ use Inertia\Inertia;
 
 use App\Models\Transaction;
 use App\Models\Category;
+use App\Models\Icon;
 
 use Carbon\Carbon;
 
@@ -25,18 +26,22 @@ class TransactionController extends Controller
     public function dashboard()
     {
         $startOfMonth = Carbon::now()->startOfMonth();
+
         $endOfMonth = Carbon::now()->endOfMonth();
 
-        $categories = Category::where('user_id',$this->id)->orWhereNull('user_id')->get();
+        $categories = Category::with('icon')->where('user_id',$this->id)->orWhereNull('user_id')->get();
 
         $recentTransactions = $this->getTransactions()->take(4)->with('category.icon')->get();
 
-        $transactions = $this->getTransactions()->whereBetween('transaction_date', [$startOfMonth, $endOfMonth])->get();
+        $icons = Icon::orderBy('name','asc')->select('id','name','class',)->get();
+
+        $transactions = $this->getTransactions()->whereBetween('transaction_date', [$startOfMonth, $endOfMonth])->select('id','title','type','amount','category_id')->with('category:id,name')->get();
 
         return Inertia::render('Dashboard', [
             'categories' => $categories,
             'transactions' => $transactions,
             'recentTransactions' => $recentTransactions,
+            'icons' => $icons,
             'flash' => session('success')
         ]);
     }
