@@ -1,9 +1,9 @@
 <template>
     <Transition name="modal-transition">
         <div v-if="modelValue" @click="closeModal"
-            class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-[10px]">
+            class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-[20px]">
 
-            <div @click.stop class="modal-card w-full max-w-md flex flex-col overflow-hidden relative
+            <div @click.stop class="modal-card w-full max-w-lg flex flex-col overflow-hidden relative
                 bg-slate-900/85 backdrop-blur-xl
                 border border-white/10 shadow-2xl shadow-black/50
                 rounded-xl text-slate-100 ring-1 ring-white/5">
