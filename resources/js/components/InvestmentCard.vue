@@ -76,7 +76,7 @@ const formatMoney = (val) => {
                     class="absolute top-0 left-0 h-full bg-violet-500 rounded-full transition-all duration-1000 ease-out shadow-[0_0_10px_rgba(139,92,246,0.6)]"
                     :style="{ width: `${allocation}%` }"
                 ></div>
-            </div>  
+            </div>
         </div>
 
         <div class="mt-1 pt-4 text-center border-t border-slate-700/50">

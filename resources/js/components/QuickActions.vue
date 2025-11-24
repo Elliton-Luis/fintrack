@@ -49,7 +49,7 @@
             </div>
         </template>
 
-        <TransactionForm :categories="props.categories" @close="isTransactionModalOpen = false"
+        <TransactionForm :categories="props.categories" :icons="props.icons" @close="isTransactionModalOpen = false"
             @save="handleTransactionSave" />
 
     </Modal>
@@ -60,7 +60,8 @@
 import { ref } from 'vue';
 
 const props = defineProps({
-    categories: Array
+    categories: Array,
+    icons: Array
 });
 
 import Modal from './Modal.vue';

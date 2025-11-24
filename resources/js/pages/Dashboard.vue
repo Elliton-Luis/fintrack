@@ -9,7 +9,7 @@
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mb-8">
-            <QuickActions :categories="props.categories" />
+            <QuickActions :categories="props.categories" :icons="props.icons" />
             <RecentTransactions :transactions="props.recentTransactions" :categories="props.categories" />
 
             <TransactionChart :transactions="props.transactions" />
@@ -41,7 +41,8 @@ import InvestmentCard from '../components/InvestmentCard.vue'
 const props = defineProps({
     categories: Array,
     recentTransactions: Array,
-    transactions: Array
+    transactions: Array,
+    icons: Array
 })
 
 const totalIncome = computed(() =>
