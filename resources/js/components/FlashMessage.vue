@@ -1,17 +1,88 @@
 <template>
-  <div
-    v-if="message"
-    class="fixed top-4 left-1/2 -translate-x-1/2
-           bg-green-600 text-white px-4 py-2 rounded-lg shadow-lg z-[9999]">
-    {{ message }}
-  </div>
+    <transition enter-active-class="transform ease-out duration-300 transition"
+        enter-from-class="-translate-y-2 opacity-0"
+        enter-to-class="translate-y-0 opacity-100"
+        leave-active-class="transition ease-in duration-100"
+        leave-from-class="opacity-100"
+        leave-to-class="-translate-y-2 opacity-0">
+
+        <div v-if="show"
+            class="w-full mb-6 backdrop-blur-md border px-4 py-3 rounded-lg shadow-md flex items-center gap-3"
+            :class="currentStyle.container">
+
+            <div class="w-6 h-6 shrink-0" :class="currentStyle.iconColor">
+                <svg v-if="type === 'success'" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                    stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <svg v-if="type === 'error'" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                    stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
+                </svg>
+            </div>
+
+            <div class="flex-1">
+                <p class="text-sm font-medium" :class="currentStyle.text">
+                    {{ message }}
+                </p>
+            </div>
+
+            <button @click="show = false" class="ml-auto hover:opacity-70 transition-opacity"
+                :class="currentStyle.text">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
+                    <path
+                        d="M6.28 5.22a.75.75 0 00-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 101.06 1.06L10 11.06l3.72 3.72a.75.75 0 101.06-1.06L11.06 10l3.72-3.72a.75.75 0 00-1.06-1.06L10 8.94 6.28 5.22z" />
+                </svg>
+            </button>
+        </div>
+    </transition>
 </template>
 
 <script setup>
-defineProps({
-  message: {
-    type: String,
-    default: null
-  }
-})
+import { ref, computed, watch } from 'vue';
+import { usePage } from '@inertiajs/vue3';
+
+const page = usePage();
+const show = ref(false);
+const message = ref('');
+const type = ref('success');
+
+const styles = {
+    success: {
+        container: 'bg-emerald-500/10 border-emerald-500/20',
+        text: 'text-emerald-400',
+        iconColor: 'text-emerald-400',
+    },
+    error: {
+        container: 'bg-red-500/10 border-red-500/20',
+        text: 'text-red-400',
+        iconColor: 'text-red-400',
+    }
+};
+
+const currentStyle = computed(() => styles[type.value]);
+let timeout = null;
+
+watch(() => page.props.flash, (newFlash) => {
+    show.value = false;
+    clearTimeout(timeout);
+
+    if (newFlash?.success) {
+        type.value = 'success';
+        message.value = newFlash.success;
+        show.value = true;
+    } else if (newFlash?.error) {
+        type.value = 'error';
+        message.value = newFlash.error;
+        show.value = true;
+    }
+
+    if (show.value) {
+        timeout = setTimeout(() => {
+            show.value = false;
+        }, 4000);
+    }
+}, { deep: true, immediate: true });
 </script>
