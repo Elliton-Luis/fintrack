@@ -21,7 +21,7 @@ class TransactionRequest extends FormRequest
             'amount'           => 'required|numeric|min:0',
             'isRecurring'      => 'required|boolean',
             'category_id'      => 'required|exists:categories,id',
-            'transaction_date' => 'nullable|date'
+            'transaction_date' => 'required|date'
         ];
     }
 
@@ -48,6 +48,7 @@ class TransactionRequest extends FormRequest
         'category_id.exists'   => 'A categoria selecionada não existe.',
 
         'transaction_date.date' => 'A data informada é inválida.',
+        'transaction_date.required' => 'É necessário informar uma data',
     ];
 }
 }
