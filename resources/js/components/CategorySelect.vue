@@ -1,7 +1,7 @@
 <template>
     <div class="relative">
         <button type="button" @click="toggle"
-            class="relative w-full flex items-center gap-3 bg-slate-700/50 border border-slate-600 rounded-md py-2 pl-3 pr-10 text-left transition-all focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 h-[42px]"
+            class="relative w-full flex items-center gap-3 bg-slate-950/30 border border-slate-600 rounded-md py-2 pl-3 pr-10 text-left transition-all focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 h-[42px]"
             :class="{ 'ring-1 ring-blue-500 border-blue-500': isOpen }">
             <template v-if="selectedOption">
                 <i :class="[getIconClass(selectedOption), 'text-lg text-blue-400 shrink-0']"></i>
