@@ -36,7 +36,7 @@ class TransactionController extends Controller
 
         $categories = Category::with('icon')->where('user_id',$this->id)->orWhereNull('user_id')->get();
 
-        $recentTransactions = $this->getTransactions()->take(5)->with('category.icon')->get()->whereBetween('transaction_date', [$startOfMonth, $endOfMonth]);
+        $recentTransactions = $this->getTransactions()->take(3)->with('category.icon')->get()->whereBetween('transaction_date', [$startOfMonth, $endOfMonth]);
 
         $icons = Icon::orderBy('name','asc')->select('id','name','class',)->get();
 
