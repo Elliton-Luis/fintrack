@@ -7,9 +7,9 @@
 
             <Navbar @toggle-menu="isMobileMenuOpen = true" />
 
-            <main class="flex-1 overflow-y-auto pt-20 lg:pt-0">
+            <main class="flex-1 pt-20 lg:pt-0 overflow-y-auto lg:overflow-hidden">
 
-                <div class="w-full p-4 mx-auto max-w-7xl lg:p-6 lg:max-w-none lg:mx-0">
+                <div class="w-full p-4 mx-auto max-w-7xl lg:p-6 lg:max-w-none lg:mx-0 h-auto lg:h-full">
                     <slot />
                 </div>
             </main>
@@ -18,7 +18,6 @@
             </div>
 
         </div>
-
 
     </div>
 </template>
