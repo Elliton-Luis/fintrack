@@ -3,7 +3,7 @@
               border border-emerald-500 bg-emerald-500/20 backdrop-blur-sm
               flex flex-col justify-between">
     <div class="flex items-center">
-      <h3 class="text-lg font-semibold text-white">Total de Entradas</h3>
+      <h3 class="text-lg font-semibold text-white">Total de Entradas </h3>
     </div>
     <p class="text-2xl font-bold text-white">
       <span v-if="isVisible">{{ formattedIncome }}</span>

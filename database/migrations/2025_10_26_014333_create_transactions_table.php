@@ -20,7 +20,7 @@ return new class extends Migration
             $table->decimal('amount',10,2);
             $table->enum('type',['expense','income']);
             $table->boolean('isRecurring')->default(false);
-            $table->date('transaction_date')->nullable();
+            $table->date('transaction_date');
             $table->softDeletes();
             $table->timestamps();
         });

@@ -25,7 +25,7 @@ class LoginRequest extends FormRequest
         return [
             'email.required'=>'Necessario informar o email',
             'email.email'=>'Necessario informar um email valido',
-            'email.exists'=>'Email inexistente',
+            'email.exists'=>'Credenciais Inválidas',
             'password.required'=>'Necessario informar a senha',
         ];
     }

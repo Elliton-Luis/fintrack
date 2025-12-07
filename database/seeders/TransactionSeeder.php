@@ -14,166 +14,155 @@ class TransactionSeeder extends Seeder
         Transaction::create([
             'user_id' => 1,
             'category_id' => 1,
-            'title' => 'Salário',
-            'description' => 'Pagamento referente ao mês de novembro',
-            'amount' => 5000.00,
+            'title' => 'Salário Mensal',
+            'description' => 'Pagamento referente a Dezembro',
+            'amount' => 5500.00,
             'type' => 'income',
             'isRecurring' => true,
-            'transaction_date' => '2025-11-15',
-        ]);
-
-        Transaction::create([
-            'user_id' => 1,
-            'category_id' => 6,
-            'title' => 'Supermercado',
-            'description' => null,
-            'amount' => 350.75,
-            'type' => 'expense',
-            'isRecurring' => false,
-            'transaction_date' => '2025-11-14',
+            'transaction_date' => '2025-12-05',
         ]);
 
         Transaction::create([
             'user_id' => 1,
             'category_id' => 2,
-            'title' => 'Freelancer',
-            'description' => 'Projeto extra entregue no início do mês',
+            'title' => 'Desenvolvimento Web',
+            'description' => 'Criação de Landing Page',
             'amount' => 1200.00,
             'type' => 'income',
             'isRecurring' => false,
-            'transaction_date' => '2025-11-10',
+            'transaction_date' => '2025-12-10',
+        ]);
+
+        Transaction::create([
+            'user_id' => 1,
+            'category_id' => 3,
+            'title' => 'Dividendos FIIs',
+            'description' => 'Proventos mensais',
+            'amount' => 320.50,
+            'type' => 'income',
+            'isRecurring' => true,
+            'transaction_date' => '2025-12-15',
+        ]);
+
+        Transaction::create([
+            'user_id' => 1,
+            'category_id' => 4,
+            'title' => 'Juros Poupança',
+            'description' => 'Rendimento automático',
+            'amount' => 45.90,
+            'type' => 'income',
+            'isRecurring' => true,
+            'transaction_date' => '2025-12-01',
+        ]);
+
+        Transaction::create([
+            'user_id' => 1,
+            'category_id' => 5,
+            'title' => 'Reembolso Uber',
+            'description' => 'Reembolso de transporte corporativo',
+            'amount' => 85.00,
+            'type' => 'income',
+            'isRecurring' => false,
+            'transaction_date' => '2025-12-08',
+        ]);
+
+        Transaction::create([
+            'user_id' => 1,
+            'category_id' => 6,
+            'title' => 'Almoço Restaurante',
+            'description' => 'Rodízio com amigos',
+            'amount' => 89.90,
+            'type' => 'expense',
+            'isRecurring' => false,
+            'transaction_date' => '2025-12-06',
         ]);
 
         Transaction::create([
             'user_id' => 1,
             'category_id' => 7,
             'title' => 'Combustível',
-            'description' => null,
-            'amount' => 200.00,
+            'description' => 'Tanque cheio gasolina',
+            'amount' => 250.00,
             'type' => 'expense',
             'isRecurring' => true,
-            'transaction_date' => '2025-11-13',
+            'transaction_date' => '2025-12-07',
         ]);
 
         Transaction::create([
             'user_id' => 1,
             'category_id' => 8,
-            'title' => 'Cinema',
-            'description' => 'Sessão noturna com amigos',
-            'amount' => 75.50,
-            'type' => 'expense',
-            'isRecurring' => false,
-            'transaction_date' => '2025-11-12',
-        ]);
-
-        Transaction::create([
-            'user_id' => 1,
-            'category_id' => 3,
-            'title' => 'Rendimento de investimentos',
-            'description' => 'Lucro mensal da aplicação',
-            'amount' => 800.00,
-            'type' => 'income',
-            'isRecurring' => true,
-            'transaction_date' => '2025-11-05',
-        ]);
-
-        Transaction::create([
-            'user_id' => 1,
-            'category_id' => 4,
-            'title' => 'Rendimentos bancários',
-            'description' => 'Juros sobre poupança',
-            'amount' => 120.00,
-            'type' => 'income',
-            'isRecurring' => true,
-            'transaction_date' => '2025-11-06',
-        ]);
-
-        Transaction::create([
-            'user_id' => 1,
-            'category_id' => 6,
-            'title' => 'Padaria',
-            'description' => 'Pães e lanches',
-            'amount' => 45.30,
-            'type' => 'expense',
-            'isRecurring' => false,
-            'transaction_date' => '2025-11-07',
-        ]);
-
-        Transaction::create([
-            'user_id' => 1,
-            'category_id' => 6,
-            'title' => 'Restaurante',
-            'description' => 'Almoço de trabalho',
+            'title' => 'Ingressos Cinema',
+            'description' => 'Estreia de filme',
             'amount' => 60.00,
             'type' => 'expense',
             'isRecurring' => false,
-            'transaction_date' => '2025-11-08',
-        ]);
-
-        Transaction::create([
-            'user_id' => 1,
-            'category_id' => 7,
-            'title' => 'Uber',
-            'description' => 'Corrida diária',
-            'amount' => 150.00,
-            'type' => 'expense',
-            'isRecurring' => true,
-            'transaction_date' => '2025-11-09',
+            'transaction_date' => '2025-12-12',
         ]);
 
         Transaction::create([
             'user_id' => 1,
             'category_id' => 9,
             'title' => 'Aluguel',
-            'description' => 'Mensalidade do apartamento',
+            'description' => 'Mensalidade apartamento',
             'amount' => 1800.00,
             'type' => 'expense',
             'isRecurring' => true,
-            'transaction_date' => '2025-11-01',
+            'transaction_date' => '2025-12-05',
         ]);
 
         Transaction::create([
             'user_id' => 1,
             'category_id' => 10,
-            'title' => 'Curso online',
-            'description' => 'Curso de desenvolvimento',
-            'amount' => 200.00,
+            'title' => 'Curso Inglês',
+            'description' => 'Mensalidade escola de idiomas',
+            'amount' => 350.00,
+            'type' => 'expense',
+            'isRecurring' => true,
+            'transaction_date' => '2025-12-10',
+        ]);
+
+        Transaction::create([
+            'user_id' => 1,
+            'category_id' => 11,
+            'title' => 'Consulta Médica',
+            'description' => 'Dermatologista particular',
+            'amount' => 400.00,
             'type' => 'expense',
             'isRecurring' => false,
-            'transaction_date' => '2025-11-11',
+            'transaction_date' => '2025-12-14',
         ]);
 
         Transaction::create([
             'user_id' => 1,
-            'category_id' => 8,
-            'title' => 'Show',
-            'description' => 'Ingresso para show local',
-            'amount' => 250.00,
+            'category_id' => 12,
+            'title' => 'Compras Semanais',
+            'description' => 'Mantimentos para casa',
+            'amount' => 650.45,
+            'type' => 'expense',
+            'isRecurring' => true,
+            'transaction_date' => '2025-12-02',
+        ]);
+
+        Transaction::create([
+            'user_id' => 1,
+            'category_id' => 13,
+            'title' => 'Conta de Luz',
+            'description' => 'Referente a Novembro',
+            'amount' => 185.30,
+            'type' => 'expense',
+            'isRecurring' => true,
+            'transaction_date' => '2025-12-09',
+        ]);
+
+        Transaction::create([
+            'user_id' => 1,
+            'category_id' => 14,
+            'title' => 'Presente Aniversário',
+            'description' => 'Presente para familiar',
+            'amount' => 150.00,
             'type' => 'expense',
             'isRecurring' => false,
-            'transaction_date' => '2025-11-16',
-        ]);
-
-        Transaction::create([
-            'user_id' => 1,
-            'category_id' => 5,
-            'title' => 'Reembolso viagem',
-            'description' => 'Dinheiro devolvido de despesas da viagem',
-            'amount' => 300.00,
-            'type' => 'income',
-            'isRecurring' => false,
-            'transaction_date' => '2025-11-17',
-        ]);
-
-        Transaction::create([
-            'user_id' => 1,
-            'category_id' => 2,
-            'title' => 'Projeto extra',
-            'description' => 'Serviço pontual de freelancer',
-            'amount' => 500.00,
-            'type' => 'income',
-            'isRecurring' => false,
-            'transaction_date' => '2025-11-18',
+            'transaction_date' => '2025-12-20',
         ]);
     }
 }
